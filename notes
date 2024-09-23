@@ -1,0 +1,46 @@
+GOAL:
+
+
+see who is at my computer.
+
+if person not me, report to my api AND shutdown the computer
+
+
+follow these to create rtmp server with nginx
+
+    https://github.com/arut/nginx-rtmp-module
+
+    https://github.com/nginx/nginx/?tab=readme-ov-file#building-from-source
+
+
+start stream with:
+
+ffmpeg -f v4l2 -i /dev/video0 -c:v libx264 -preset fast -f flv rtmp://localhost/live/stream\n
+
+view stream with:
+
+vlc => media => open network stream
+
+example config to add to nginx.conf
+
+rtmp {
+    server {
+        listen 1935;
+        chunk_size 4000;
+        application show {
+            live on;
+            interleave on;
+            dash on;
+            dash_path /mnt/dash/;
+            dash_fragment 15s;
+        }
+    }
+}
+
+
+
+
+add authentication to view the live feed
+
+
+this opens dashboard to things such as recording the live footage
